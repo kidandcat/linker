@@ -28,12 +28,7 @@ type tLink struct {
 
 func (l *tLink) load() {
 	err := db.View(func(txn *badger.Txn) error {
-		hashbyte, err := base64.StdEncoding.DecodeString(l.Hash)
-		if err != nil {
-			log.Println("Error decoding b64 hash", l.Hash, err)
-			return err
-		}
-		item, err := txn.Get(hashbyte)
+		item, err := txn.Get([]byte(l.Hash))
 		if err != nil {
 			log.Println("Error Get favicon", err)
 			return err
@@ -69,7 +64,7 @@ func (l *tLink) save() {
 		data := []byte(urlEnc + "-" + faviconEnc)
 		hash := []byte(randomString(15))
 		err := txn.Set(hash, data)
-		l.Hash = base64.StdEncoding.EncodeToString(hash)
+		l.Hash = string(hash)
 		return err
 	})
 	if err != nil {
