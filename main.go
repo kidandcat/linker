@@ -71,8 +71,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 					log.Println("error parsing url", link.URL)
 					return
 				}
-				log.Println("Proxying URL", url.Scheme+url.Host+r.URL.Path)
-				resp, err := http.Get(url.Scheme + url.Host + r.URL.Path)
+				log.Println("Proxying URL", url.Scheme+"://"+url.Host+r.URL.Path)
+				resp, err := http.Get(url.Scheme + "://" + url.Host + r.URL.Path)
 				if err != nil {
 					return
 				}
