@@ -36,6 +36,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	} else if r.Host != domain {
 		read, write := io.Pipe()
 		hash := strings.TrimSuffix(r.URL.Host, domain)
+		log.Println("Searching hash", hash)
 		go func() {
 			defer write.Close()
 			if r.URL.Path == "/" {
@@ -43,6 +44,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 					Hash: hash,
 				}
 				if len(hash) == 0 {
+					log.Println("hash len is 0, return", hash)
 					return
 				}
 				link.load()
