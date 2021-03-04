@@ -41,6 +41,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		go func() {
 			defer write.Close()
 			if r.URL.Path == "/" {
+				log.Println("Path is /")
 				link := tLink{
 					Hash: hash,
 				}
@@ -56,7 +57,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				defer resp.Body.Close()
 				io.Copy(write, resp.Body)
 			} else {
-				resp, err := http.Get(r.URL.Path)
+				log.Println("Path is not /")
+				log.Println("Proxying URL", r.URL.String())
+				resp, err := http.Get(r.URL.String())
 				if err != nil {
 					return
 				}
