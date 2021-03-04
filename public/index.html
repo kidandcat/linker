@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linker</title>
+</head>
+
+<body>
+    <label>URL</label>
+    <input type="text" id="url" placeholder="URL">
+    <label>Favicon</label>
+    <input type="file" name="favicon" id="favicon">
+    <button onclick="post()">Crear</button>
+    <script>
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        async function post() {
+            const url = document.querySelector('#url').value
+            const file = document.querySelector('#favicon').files[0]
+            const favicon = await toBase64(file)
+            const rawResponse = await fetch('/new', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url, favicon })
+            });
+            const data = await rawResponse.text()
+            const a = document.createElement('a')
+            a.href = `http://${data}.${window.location.host}`
+            a.innerText = 'Link'
+            document.body.appendChild(a)
+        }
+    </script>
+</body>
+
+</html>
