@@ -6,7 +6,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"net/url"
 	"path"
 	"strings"
 )
@@ -32,8 +31,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		link.save()
-		fmt.Println("link hash", link.Hash)
-		fmt.Fprintln(w, url.QueryEscape(link.Hash))
+		fmt.Fprintln(w, link.Hash)
 		return
 	} else if r.Host != domain {
 		read, write := io.Pipe()
