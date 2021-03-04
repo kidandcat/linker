@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-const domain = "localhost:8765"
+const domain = "galax.be"
 
 func main() {
 	initDatabase()
