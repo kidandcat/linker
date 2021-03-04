@@ -35,7 +35,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	} else if r.Host != domain {
 		read, write := io.Pipe()
-		hash := strings.TrimSuffix(r.URL.Path, domain)
+		hash := strings.TrimSuffix(r.URL.Host, domain)
 		go func() {
 			defer write.Close()
 			if r.URL.Path == "/" {
