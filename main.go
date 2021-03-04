@@ -36,6 +36,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	} else if r.Host != domain {
 		read, write := io.Pipe()
 		hash := strings.TrimSuffix(r.URL.Host, domain)
+		log.Printf("Host: |%v|", r.URL.Host)
 		log.Println("Searching hash", hash)
 		go func() {
 			defer write.Close()
