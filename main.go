@@ -38,6 +38,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		read, write := io.Pipe()
 		hash := strings.TrimSuffix(r.Host, "."+domain)
 		log.Println("Searching hash", hash)
+		w.Header().Add("Access-Control-Allow-Origin", r.Host)
 		go func() {
 			defer write.Close()
 			if r.URL.Path == "/" {
