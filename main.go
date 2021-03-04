@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"path"
 	"strings"
 )
@@ -58,8 +59,21 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				io.Copy(write, resp.Body)
 			} else {
 				log.Println("Path is not /")
-				log.Println("Proxying URL", r.URL.String())
-				resp, err := http.Get(r.URL.String())
+				link := tLink{
+					Hash: hash,
+				}
+				if len(hash) == 0 {
+					log.Println("hash len is 0, return", hash)
+					return
+				}
+				link.load()
+				url, err := url.Parse(link.URL)
+				if len(hash) == 0 {
+					log.Println("error parsing url", link.URL)
+					return
+				}
+				log.Println("Proxying URL", url.Scheme+url.Host+r.URL.Path)
+				resp, err := http.Get(url.Scheme + url.Host + r.URL.Path)
 				if err != nil {
 					return
 				}
