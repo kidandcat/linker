@@ -30,7 +30,7 @@ func (l *tLink) load() {
 	err := db.View(func(txn *badger.Txn) error {
 		item, err := txn.Get([]byte(l.Hash))
 		if err != nil {
-			log.Println("Error Get favicon", err)
+			log.Println("Error Get favicon", err, l.Hash)
 			return err
 		}
 		err = item.Value(func(val []byte) error {
@@ -65,6 +65,7 @@ func (l *tLink) save() {
 		hash := []byte(randomString(15))
 		err := txn.Set(hash, data)
 		l.Hash = string(hash)
+		log.Println("new Save", string(hash))
 		return err
 	})
 	if err != nil {
