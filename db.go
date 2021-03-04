@@ -1,10 +1,10 @@
 package main
 
 import (
-	"crypto/md5"
 	"encoding/base64"
 	"errors"
 	"log"
+	"math/rand"
 	"strings"
 
 	"github.com/dgraph-io/badger/v3"
@@ -67,16 +67,22 @@ func (l *tLink) save() {
 		urlEnc := base64.StdEncoding.EncodeToString([]byte(l.URL))
 		faviconEnc := base64.StdEncoding.EncodeToString([]byte(l.Favicon))
 		data := []byte(urlEnc + "-" + faviconEnc)
-		hashbytes := md5.Sum(data)
-		log.Println("hash 16", hashbytes)
-		hash := make([]byte, len(hashbytes))
-		copy(hash, hashbytes[:])
+		hash := []byte(randomString(15))
 		err := txn.Set(hash, data)
 		l.Hash = base64.StdEncoding.EncodeToString(hash)
-		log.Println("hash", l.Hash)
 		return err
 	})
 	if err != nil {
 		log.Println("Error saving favicon", err)
 	}
+}
+
+func randomString(n int) string {
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+
+	s := make([]rune, n)
+	for i := range s {
+		s[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(s)
 }
