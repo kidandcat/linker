@@ -36,7 +36,7 @@
             });
             const data = await rawResponse.text()
             const a = document.createElement('a')
-            a.href = `http://${data}.${window.location.host}`
+            a.href = `https://${data}.${window.location.host}`
             a.innerText = 'Link'
             document.body.appendChild(a)
         }
