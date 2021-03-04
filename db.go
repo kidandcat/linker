@@ -31,10 +31,12 @@ func (l *tLink) load() {
 		hashbyte, err := base64.StdEncoding.DecodeString(l.Hash)
 		if err != nil {
 			log.Println("Error decoding b64 hash", l.Hash, err)
+			return err
 		}
 		item, err := txn.Get(hashbyte)
 		if err != nil {
 			log.Println("Error Get favicon", err)
+			return err
 		}
 		err = item.Value(func(val []byte) error {
 			ar := strings.Split(string(val), "-")
