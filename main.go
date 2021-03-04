@@ -44,6 +44,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 				link := tLink{
 					Hash: hash,
 				}
+				if len(hash) == 0 {
+					return
+				}
 				link.load()
 				resp, err := http.Get(link.URL)
 				if err != nil {
