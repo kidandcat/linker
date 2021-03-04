@@ -66,6 +66,9 @@ func (l *tLink) save() {
 		hash := []byte(randomString(15))
 		log.Printf("Set: |%v|", string(hash))
 		err := txn.Set(hash, data)
+		if err != nil {
+			log.Println("Error saving", string(hash), err)
+		}
 		l.Hash = string(hash)
 		log.Println("new Save", string(hash))
 		return err
