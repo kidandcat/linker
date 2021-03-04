@@ -11,14 +11,14 @@ import (
 	"strings"
 )
 
-const domain = "localhost:8080"
+const domain = "localhost:8765"
 
 func main() {
 	initDatabase()
 	defer db.Close()
 	http.HandleFunc("/", handler)
-	println("Listening 8080")
-	http.ListenAndServe("127.0.0.1:8080", nil)
+	println("Listening 8765")
+	http.ListenAndServe("127.0.0.1:8765", nil)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
